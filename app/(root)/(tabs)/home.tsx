@@ -1,12 +1,25 @@
-import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
+import { Link } from "expo-router";
+import { Text, View } from "react-native";
+import { SignOutButton } from "@/components/SignOutButton";
 
-const Home = () => {
+export default function Page() {
+  const { user } = useUser();
+
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-white">
-      <Text className="text-xl font-bold text-purple-500">ThumaMina</Text>
-    </SafeAreaView>
+    <View>
+      <SignedIn>
+        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+        <SignOutButton />
+      </SignedIn>
+      <SignedOut>
+        <Link href="/(auth)/sign-in">
+          <Text>Sign in</Text>
+        </Link>
+        <Link href="/(auth)/sign-up">
+          <Text>Sign up</Text>
+        </Link>
+      </SignedOut>
+    </View>
   );
-};
-
-export default Home;
+}
